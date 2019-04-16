@@ -119,6 +119,7 @@ rlike
 
 #hdfs清空回收站
 hdfs dfs -expunge
+不一定清的掉，hdfs dfs -du -h /查看每个文件占用的磁盘空间
 
 #impala连接
 impala：connect 10.1.40.105:21000

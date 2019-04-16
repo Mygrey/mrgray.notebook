@@ -21,12 +21,20 @@ docker run -it  --name tensorflow1.0 -v /home/docker/data/tensorflow/notebooks:/
 #7777端口在8888端口占用情况下使用，进行映射
 token=3e75c4a6d8d8dbf34a0932c7fe2aa5058acebc353e419c07
 #token用于登录，启动时注意查看。
+docker search python3.4 搜索镜像
 
+通过name删除镜像
+[kass@localhost ~]$ sudo docker rmi docker.io/ubuntu
+docker pull    获取镜像
 docker start 已经停止的容器id
+
+docker rm -f 容器id
+
 docker exec -it f883cb5a8cf1 /bin/bash 进入正在运行的容器
 exit 退出但不停止容器
 docker stop停止容器
 jupyter-notebook list获取token，重新设置密码。
+请按Ctrl+P+Q进行退出容器
 
 
 uname -a查看内核版本

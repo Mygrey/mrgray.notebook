@@ -1,0 +1,284 @@
+./configure --prefix=/usr/local/php7  --with-config-file-path=/etc  --with-bz2  --with-curl --with-gd    --with-openssl  -with-gettext  --with-xsl --with-zlib-dir --enable-pcntl   --enable-sockets --enable-calendar  --enable-exif  --enable-ftp  --enable-mbstring --enable-fpm   --enable-zip --with-mcrypt   --with-mysqli=/usr/bin/mysql_config --with-pdo-mysql=/usr/bin/mysql
+
+
+
+configure: error: xml2-config not found. Please check your libxml2 installation.
+
+#http://xmlsoft.org/downloads.html
+#rpm -ivh libxml2-2.7.2-1.x86_64.rpm  已 经安装
+rpm -i --force --nodeps libxml2-devel-2.9.8-4.fc29.x86_64.rpm
+
+
+checking libxml2 install dir... no
+checking whether libxml build works... no
+configure: error: build test failed.  Please check the config.log for details
+
+
+#https://pkgs.org/download/zlib-devel 
+yumdownloader zlib
+
+重新安装zlib-devel，然后重新安装 libxml2-devel
+# yum erase zlib-devel
+# yum install zlib-devel
+
+# rpm -i --force --nodeps libxml2-devel-2.9.8-4.fc29.x86_64.rpm
+
+checking for Kerberos support... no
+checking whether to use system default cipher list instead of hardcoded value... no
+checking for RAND_egd... no
+checking for pkg-config... /usr/bin/pkg-config
+configure: error: Cannot find OpenSSL's <evp.h>
+
+#yum install openssl-devel
+
+
+checking whether to enable bc style precision math functions... no
+checking for BZip2 support... yes
+checking for BZip2 in default path... not found
+configure: error: Please reinstall the BZip2 distribution
+
+#yum install bzip2-devel
+
+checking for cURL in default path... not found
+
+#yum install curl-devel
+
+
+checking for FreeType 2... no
+checking whether to enable truetype string function in GD... no
+checking whether to enable JIS-mapped Japanese font support in GD... no
+If configure fails try --with-webp-dir=<DIR>
+If configure fails try --with-jpeg-dir=<DIR>
+configure: error: png.h not found.
+
+#yum install libpng-devel
+
+
+checking whether to enable embedded MySQLi support... no
+checking for specified location of the MySQL UNIX socket... no
+mysql_config not found
+configure: error: Please reinstall the mysql distribution
+
+mysql安装在另外一台服务器，
+#yum install mysql-devel
+
+
+configure: error: xslt-config not found. Please reinstall the libxslt >= 1.1.0 distribution
+
+#rpm --force -i --nodeps libxslt-devel-1.1.28-5.el7.x86_64.rpm
+
+#################################################################
+zabbix压缩包下载，解压
+wget http://sourceforge.net/projects/zabbix/files/ZABBIX%20Latest%20Stable/3.0.3/zabbix-3.0.3.tar.gz
+mysql操作：
+CREATE DATABASE zabbix CHARACTER SET utf8 COLLATE utf8_bin; 
+GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'%' IDENTIFIED BY 'zabbix'  WITH GRANT OPTION; 
+flush privileges;
+
+./configure --prefix=/usr/local/zabbix --sysconfdir=/etc/zabbix/ --enable-server --enable-agent --with-net-snmp --with-libcurl --with-mysql --with-libxml2
+
+checking for net-snmp-config... no
+configure: error: Invalid Net-SNMP directory - unable to find net-snmp-config
+
+yumdownloader net-snmp-devel
+rpm --force -i --nodeps net-snmp-devel-5.7.2-33.el7_5.2.x86_64.rpm
+强制安装没有解决，去掉--with-net-snmp
+./configure --prefix=/usr/local/zabbix --sysconfdir=/etc/zabbix/ --enable-server --enable-agent --with-net-snmp --with-libcurl --with-mysql 
+
+安装
+elfutils-devel
+#elfutils-devel is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    elfutils-libelf-devel is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    libnetsnmp.so.31()(64bit) is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    libnetsnmpagent.so.31()(64bit) is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    libnetsnmphelpers.so.31()(64bit) is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    libnetsnmpmibs.so.31()(64bit) is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    libnetsnmptrapd.so.31()(64bit) is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+
+   #lm_sensors-devel is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    #net-snmp = 1:5.7.2-33.el7_5.2 is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    #net-snmp-agent-libs = 1:5.7.2-33.el7_5.2 is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+
+    net-snmp-libs = 1:5.7.2-33.el7_5.2 is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    #perl-devel(x86-64) is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    #rpm-devel is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+    #tcp_wrappers-devel is needed by net-snmp-devel-1:5.7.2-33.el7_5.2.x86_64
+
+cd databases/mysql
+mysql -h 10.1.40.104  -uzabbix -pzabbix zabbix < ./schema.sql
+
+
+mkdir /etc/zabbix/alertscripts
+mkdir /etc/zabbix/externalscripts
+ln -s /usr/local/zabbix/sbin/* /usr/sbin/
+ln -s /usr/local/zabbix/bin/* /usr/local/bin/
+cp /zabbix-3.0.3/misc/init.d/fedora/core/zabbix_* /etc/init.d/ 
+
+
+
+chmod +x /etc/init.d/zabbix_*
+sed -i "s@BASEDIR=/usr/local@BASEDIR=/usr/local/zabbix@g" /etc/init.d/zabbix_server
+sed -i "s@BASEDIR=/usr/local@BASEDIR=/usr/local/zabbix@g" /etc/init.d/zabbix_agentd
+
+
+mkdir -p /var/www/html/zabbix
+cp -r /zabbix-3.0.3/frontends/php/* /var/www/html/zabbix/
+chown -R apache.apache /var/www/html/zabbix/
+
+
+启动
+/etc/init.d/zabbix_server start
+/etc/init.d/zabbix_agentd start
+service httpd restart
+出现问题
+Redirecting to /bin/systemctl restart httpd.service
+Job for httpd.service failed because the control process exited with error code. See "systemctl status httpd.service" and "journalctl -xe" for details.
+
+
+
+restart httpd.service
+Job for httpd.service failed because the control process exited with error code. See "systemctl status httpd.service" and "journalctl -xe" for details.
+[root@cdhnode3 zabbix-3.0.3]# systemctl status httpd.service
+● httpd.service - The Apache HTTP Server
+   Loaded: loaded (/usr/lib/systemd/system/httpd.service; disabled; vendor preset: disabled)
+   Active: failed (Result: exit-code) since Tue 2018-09-18 15:23:10 CST; 2min 10s ago
+     Docs: man:httpd(8)
+           man:apachectl(8)
+  Process: 35001 ExecStop=/bin/kill -WINCH ${MAINPID} (code=exited, status=1/FAILURE)
+  Process: 34997 ExecStart=/usr/sbin/httpd $OPTIONS -DFOREGROUND (code=exited, status=1/FAILURE)
+ Main PID: 34997 (code=exited, status=1/FAILURE)
+
+Sep 18 15:23:10 cdhnode3 httpd[34997]: (98)Address already in use: AH00072: make_sock: could not bind to address [::]:80
+Sep 18 15:23:10 cdhnode3 httpd[34997]: (98)Address already in use: AH00072: make_sock: could not bind to address 0.0.0.0:80
+Sep 18 15:23:10 cdhnode3 httpd[34997]: no listening sockets available, shutting down
+Sep 18 15:23:10 cdhnode3 httpd[34997]: AH00015: Unable to open logs
+Sep 18 15:23:10 cdhnode3 systemd[1]: httpd.service: main process exited, code=exited, status=1/FAILURE
+Sep 18 15:23:10 cdhnode3 kill[35001]: kill: cannot find process ""
+Sep 18 15:23:10 cdhnode3 systemd[1]: httpd.service: control process exited, code=exited status=1
+Sep 18 15:23:10 cdhnode3 systemd[1]: Failed to start The Apache HTTP Server.
+Sep 18 15:23:10 cdhnode3 systemd[1]: Unit httpd.service entered failed state.
+Sep 18 15:23:10 cdhnode3 systemd[1]: httpd.service failed.
+
+
+
+
+chkconfig httpd on
+chkconfig zabbix_server on
+chkconfig zabbix_agentd on
+web页面无法显示
+
+cp -r frontends/php /usr/local/nginx/html/zabbix
+
+chown www.www -R /usr/local/nginx/html/zabbix
+
+使用tomcat
+访问成功后：
+Minimum required size of PHP post is 16M (configuration option "post_max_size").
+Minimum required limit on execution time of PHP scripts is 300 (configuration option "max_execution_time").
+Minimum required limit on input parse time for PHP scripts is 300 (configuration option "max_input_time").
+Time zone for PHP is not set (configuration parameter "date.timezone").
+PHP bcmath extension missing (PHP configuration parameter --enable-bcmath).
+
+PHP gd JPEG image support missing.
+
+PHP gd FreeType support missing.
+
+
+PHP option "post_max_size"  8M  16M Fail
+PHP option "max_execution_time" 30  300 Fail
+PHP option "max_input_time" 60  300 Fail
+PHP option "date.timezone"  unknown     Fail
+PHP bcmath  off     Fail
+重新安装php-bcmatn
+
+
+[root@cdhnode3 bcmath]# /usr/local/php7/bin/phpize 
+Configuring for:
+PHP Api Version:         20160303
+Zend Module Api No:      20160303
+Zend Extension Api No:   320160303
+Cannot find autoconf. Please check your autoconf installation and the
+$PHP_AUTOCONF environment variable. Then, rerun this script.
+
+yumdownloader autoconf
+
+重新编译安装bcmath
+成功
+
+
+./configure --with-php-config=/usr/local/php7/bin/php-config --with-png-dir --with-freetype-dir --with-jpeg-dir --with-zlib-dir --with-gd
+
+If configure fails try --with-xpm-dir=<DIR>
+configure: error: freetype-config not found.
+
+yum install freetype-devel
+
+make&&make install
+之后配置php.ini
+依然存在问题
+
+ln -s /usr/lib64/libjpeg.so /usr/local/lib/libjpeg.so
+
+
+[root@cdhnode3 /]# php -r 'print_r(gd_info());'
+PHP Warning:  PHP Startup: Invalid library (maybe not a PHP library) 'gd.so' in Unknown on line 0
+PHP Warning:  PHP Startup: Invalid library (maybe not a PHP library) 'libjpeg.so' in Unknown on line 0
+Array
+(
+    [GD Version] => bundled (2.1.0 compatible)
+    [FreeType Support] => 
+    [GIF Read Support] => 1
+    [GIF Create Support] => 1
+    [JPEG Support] => 
+    [PNG Support] => 1
+    [WBMP Support] => 1
+    [XPM Support] => 
+    [XBM Support] => 1
+    [WebP Support] => 
+    [JIS-mapped Japanese Font Support] => 
+)
+
+
+./configure --with-php-config=/usr/local/php7/bin/php-config --with-png-dir --with-freetype-dir --enable-shared --with-jpeg-dir  --enable-shared --with-zlib-dir --with-gd
+
+./configure --prefix=/usr/local/php7  --with-config-file-path=/etc  --with-bz2  --with-curl  --with-openssl  -with-gettext  --with-xsl --with-zlib-dir --enable-pcntl   --enable-sockets --enable-calendar  --enable-exif  --enable-ftp  --enable-mbstring --enable-fpm   --enable-zip --with-mcrypt   --with-mysqli=/usr/bin/mysql_config --with-pdo-mysql=/usr/bin/mysql
+
+
+[root@cdhnode3 /]# php -r 'print_r(gd_info());'
+PHP Warning:  PHP Startup: Invalid library (maybe not a PHP library) 'libjpeg.so' in Unknown on line 0
+Array
+(
+    [GD Version] => bundled (2.1.0 compatible)
+    [FreeType Support] => 1
+    [FreeType Linkage] => with freetype
+    [GIF Read Support] => 1
+    [GIF Create Support] => 1
+    [JPEG Support] => 1
+    [PNG Support] => 1
+    [WBMP Support] => 1
+    [XPM Support] => 
+    [XBM Support] => 1
+    [WebP Support] => 
+    [JIS-mapped Japanese Font Support] => 
+)
+
+zabbix server is not running: the information displayed may not be current！
+/tmp/zabbix_server.log
+
+
+GRANT ALL PRIVILEGES ON zabbix.* TO 'zabbix'@'localhost' IDENTIFIED BY 'zabbix'  WITH GRANT OPTION; 
+
+
+curl -X POST -H "Content-Type":application/json-rpc --data '{"jsonrpc":"2.0", "method":"host.get", "id":1, "auth":null, "params":{"output":["hostid","host"], "selectInterfaces":["interfaceid","ip"]}}' http://10.1.40.107:8082/zabbix/api_jsonrpc.php HTTP/1.0
+
+curl -X POST -H "Content-Type":application/json-rpc --data '{"jsonrpc":"2.0", "method":"host.get", "id":1, "auth":"8908ae9788b9bb12eee054164ed82cea", "params":{"output":["hostid","host"], "selectInterfaces":["interfaceid","ip"]}}' http://10.1.40.107:8082/zabbix/api_jsonrpc.php HTTP/1.0
+
+
+
+POST /zabbix/api_jsonrpc.php HTTP/1.0
+"Content-Type":application/json-rpc
+--data '{"jsonrpc":"2.0", "method":"host.get", "id":1, "auth":"8908ae9788b9bb12eee054164ed82cea", "params":{"output":["hostid","host"], "selectInterfaces":["interfaceid","ip"]}}' 
+
+插件下载地址https变成http
+第二种方法：settings->system settings->updata下面的Use secure Connetion去掉。可能是使用了https协议下载导致的问题,亲测有效！
+

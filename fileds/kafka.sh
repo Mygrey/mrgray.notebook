@@ -8,6 +8,10 @@
 
 ###############################  kafka topic ##########################################
 设置 auto.create.topics.enable = false，默认设置为true。如果设置为true，则produce或者fetch 不存在的topic也会自动创建这个topic
+如果kafka broker中的config/server.properties配置文件中配置了auto.create.topics.enable参数为true（默认值就是true），那么当生产者向一个尚未创建的topic发送消息时，
+会自动创建一个num.partitions（默认值为1）个分区和default.replication.factor（默认值为1）个副本的对应topic。
+通过kafka提供的kafka-topics.sh脚本来创建。
+--------------------- 
 
 
 描述主题：
@@ -19,13 +23,30 @@ kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --par
 
 删除topic：
 sh kafka-topics.sh --delete --zookeeper 10.1.40.107:2181 --topic windowsbit
+基本可以删除那些正常的topic，但是一些topic在使用过程中出现过种种问题，导致删除不正常。
+
+
 删除 /var/lib/kafka/[topic]
 
-进入zookeeper，第一步无法删除，描述显示为 mark as deltetion 先进行第二步在进行第一步：
-
-rmr /brokers/topics/topic-wgz-test
+进入zookeeper，第一步无法删除，描述显示为 mark as deltetion 先进行delete_topics删除在进行第一步：
 rmr /admin/delete_topics/topcic-wgz-test
+rmr /brokers/topics/topic-wgz-test
+rmr /config/topics/test-topic
+rmr /kafka/config/topics
 
+
+删除线程执行删除操作的真正逻辑是：
+1. 它首先会给当前所有broker发送更新元数据信息的请求，告诉这些broker说这个topic要删除了，你们可以把它的信息从缓存中删掉了
+2. 开始删除这个topic的所有分区
+    2.1 给所有broker发请求，告诉它们这些分区要被删除。broker收到后就不再接受任何在这些分区上的客户端请求了
+    2.2 把每个分区下的所有副本都置于OfflineReplica状态，这样ISR就不断缩小，当leader副本最后也被置于OfflineReplica状态时leader信息将被更新为-1
+    2.3 将所有副本置于ReplicaDeletionStarted状态
+    2.4 副本状态机捕获状态变更，然后发起StopReplicaRequest给broker，broker接到请求后停止所有fetcher线程、移除缓存，然后删除底层log文件
+    2.5 关闭所有空闲的Fetcher线程
+3. 删除zookeeper下/brokers/topics/test-topic节点
+4. 删除zookeeper下/config/topics/test-topic节点
+5. 删除zookeeper下/admin/delete_topics/test-topic节点
+6. 更新各种缓存，把test-topic相关信息移除出去
 
 ############################  kafka producer ##########################################
 执行生产者：

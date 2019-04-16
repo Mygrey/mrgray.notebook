@@ -1,0 +1,402 @@
+svn://10.1.40.238/bigdata   liujijun 123456
+
+uname -a查看内核版本
+du -sch /var/*
+查看每个文件占用的磁盘空间
+
+php-fpm restart
+
+php -r 'print_r(gd_info());'
+
+
+[root@iZ25m1box8cZ ~]# ps -ef|grep zabbix
+root     20125 19728  0 10:22 pts/3    00:00:00 grep --color=auto zabbix
+
+
+Starting zabbix_server:  zabbix_server [12336]: unknown parameter "HistoryTextCacheSize" in config file "/etc/zabbix/zabbix_server.conf",
+删除对应参数
+Starting zabbix_server:  zabbix_server [14742]: user zabbix does not exist
+groupadd zabbix #创建用户组zabbix
+
+useradd zabbix -g zabbix -s /bin/false #创建用户zabbix，并且把用户zabbix加入到用户组zabbix中
+Sep 20 11:27:27 cdhnode3 zabbix_server[15981]: Starting zabbix_server:  [  OK  ]
+
+
+netstat -tunlp |grep zabbix，没有
+
+connection to database 'zabbix' failed: [1040] Too many connections
+
+
+
+jpeg压缩包编译安装和yum安装有什么不同？前者libjpeg.so大小要大一些？
+
+org.apache.catalina.core.ContainerBase.[Catalina].[localhost].handlers = 2localhost.org.apache.juli.AsyncFileHandler,java.util.logging.ConsoleHandler
+
+
+C:\Users\root\Documents\maven-repository\com\h2z\ibrain\ibrain-common\2.0.0-SNAPSHOT\ibrain-common-2.0.0-SNAPSHOT-sources.jar!\com\h2z\ibrain\common\utils\DateUtil.java
+
+./nginx -s reload
+
+
+找到settings->system settings->updata下面的Use secure Connetion去掉。
+
+
+可以使用：ps -fe|grep filename， 
+也可以使用：fuser filename查看 
+然后可以看这个进程跟哪里东西有关联，使用了哪些端口 
+只查看该进程：ps -ef | grep ID 
+查看该进程打开的文件：lsof -p ID 
+查看内存分配：lcat /proc/ID/maps 
+查看堆栈：pstack 11ID 
+查看发出的系统调用:strace -p ID 
+查看调用库函数:ltrace -p ID
+
+postqresql连接方式
+psql postgresql://zhic:zhic123456@58.42.244.74:14103/BK_Accident
+
+wfxw违法类型
+
+
+  :%s/from/to/g   ：  对所有行的内容进行替换。
+
+load data infile '/home/ljj/data/v_jg_veh_lock.csv' into table v_jg_veh_lock fields terminated by ',' optionally enclosed by '"' escaped by '"'  lines terminated by '\r\n';
+
+
+v_jg_vio_violation
+v_jg_drv_lock
+v_jg_veh_lock
+v_jg_vehicle
+v_jg_drivinglicense
+v_jg_wf_info
+
+
+mysql> SELECT * FROM tablename INTO OUTFILE 'target_file' [option];
+
+其中 option 参数可以是以下选项：
+
+命令参数	说明
+fields terminated by '字符'	字段分隔符，默认字符为制表符'\t'
+fields [optionally] enclosed by '单字符'	字段引用符，加上optionally后在数字类型上不会有引用符号
+fields escaped by '单字符'	转义字符，默认为'\'
+lines starting by '字符'	每行前都加此支付，默认为空
+lines terminated by '字符'	行结束符，默认为'\n'
+
+Python PEP8 Autoformat，快捷键Ctrl+Shift+R
+
+
+mysqldump -h 10.1.80.6 -uroot -pbigDataTeam traffic zc_level_result > level.sql
+
+
+show session variables like 'sql_select_limit';
+
+
+在安装mysql5.7版本时，经常会遇到mysql -u root -p直接回车登陆不上的情况，原因在于5.7版本在安装时自动给了一个随机密码，坑爹的是在init步骤的时候不像linux系统会给出命令行提示，需要手动在mysql目录下搜索*.err，以文本形式打开才能看到如下内容：
+
+016-02-25T15:09:43.033062Z 1 [Note] A temporary password is generated for root@localhost: >mso<k70mrWe
+
+红色字母即为第一次的登陆密码，记得加双引号。
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY '新密码';
+
+基础分500
+40:1
+PDO=20
+20=Bln2
+B=28.85
+A=500+B*ln(1/40)=393.58
+
+beeline -n hdfs -u jdbc:hive2://localhost:10000
+
+
+
+时间格式处理
+ select from_unixtime(unix_timestamp(cclzrq,'dd/MM/yyyy HH:mm:ss'),'yyyy-MM-dd HH:mm:ss') from v_jg_drivinglicense limit 10;
+
+
+ 链接信息 ： IP：58.42.244.74 端口 14103  数据库 BK_Accident  用户名zhic  密码 zhic123456
+
+ hive -e "select score,count(0) from traffic.t_score_info group by score" | sed 's/\t/,/g'> ./data_m.csv
+hive -e "select * from pms.pms_algorithm_desc" | sed 's/\t/,/g' > ./aaa.txt
+
+
+set sql_safe_updates=0;
+update zc_elec.t_elec_credit_info set insert_time=date_format(now(),'%Y/%m/%d %H:%I:%S');
+
+
+   ./redis-cli -c -h 10.1.80.8 -p 6379 cluster nodes
+博康
+193.5.111.22  sid:gyjg   p:1521
+   zckj   zckj2018
+
+teamview  :
+792 188 811
+zc123456
+
+
+中转机：
+222.85.150.247
+用户：root
+密码：zc123456
+
+交管大数据中心：
+172.16.25.3~9
+用户：root
+密码：123456
+
+电子驾照MySQL数据库
+链接：58.42.244.66  
+端口：20083
+数据库：zc_elec
+用户名：zcelec
+密码：zcelec
+root密码：123456
+
+
+ cp java-json.jar/opt/cloudera/parcels/CDH-5.7.0-1.cdh5.7.0.p0.45/lib/sqoop/lib
+
+
+ sqoop export --connect jdbc:mysql://172.16.25.4:3306/test?characterEncoding=utf-8 --username root --password 123456 --table t_elec_credit_info --update-key "id" --update-mode allowinsert  --input-fields-terminated-by ","  --export-dir /home/hdfs/data/traffic/t_elec_credit_info
+
+
+ select  cast(substring(regexp_replace('2016-06-05 00:00:00.0', '-', ''),1,8) as int);
+hive正则：
+regexp
+rlike
+
+结果--》20160605
+date_sub(current_date, 1)
+
+
+hue:8889
+hadoop:8088
+
+select "贵A1452D" regexp "贵A\\w{4}\\d";
+select '贵A1452' regexp '贵A\\w+\\d$';
+
+
+
+idea maven 依赖树，解决包冲突：
+ctrl+alt+shift+U
+图中的红色实线就算是冲突的，可以入上图那样，右键，排除，他就自动在pom文件里面给exclud啦。
+
+还有一种是虚线的红线。
+这种虚线，告诉你同一个jar都在哪里被多次引用了。
+
+
+idea 注释：/**+回车
+ctrl+alt+t  快速增加try
+
+
+nexus本地仓库：
+http://10.1.40.239:8081/nexus/#nexus-search;quick~rt-common
+
+
+添加一个Spring Bean的配置文件（xml）
+在src/main/resource/目录中点击右键，New->XML Configure file->Spring Config，
+
+idea创建子工程：
+在父工程上右键点击new Module,依次点击maven，同样不要勾选“create from archetype”
+
+错误：
+@Override is not allowed when implementing interface method
+父工程pom.xml增加：
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+配置bean的property进行参数注入，而在对应的类中必须要有set(),get()方法才能进行参数注入。 
+
+idea快捷键：
+今天偶然发现了IntelliJ中 创建main函数的快捷键，依次还有for循环，System.out.println();
+
+在编写代码的时候直接输入psv就会看到一个psvm的提示，此时点击tab键一个main方法就写好了。
+
+psvm 也就是public static void main的首字母。
+依次还有在方法体内键入for会有一个fori的提示，选中然后tab键，就会自动创建一个for循环。
+如何像写一个System.out.println();就是sout
+更多的提示可以CTRL + j 可以查看(前提是你用的默认的keymap模板)，mac系统下是command＋j。
+
+
+spring中ClassPathXmlApplicationContext读取路径是project structure-->modules里面配置
+的 resources folds
+
+redis部署：
+redis-cli --cluster create 127.0.0.1:6379 
+
+
+
+hive msck命令报错，HIVE Execution Error, return code 1 from org.apache.hadoop.hive.ql.exec.DDLTask
+set hive.msck.path.validation=ignore;
+MSCK REPAIR TABLE table_name;
+
+sql格式化 ctrl+k  然后ctrl+f
+
+
+清空回收站
+hdfs dfs -expunge
+
+=======================================2018-12-12 update=============================================
+
+@Repository、@Service、@Controller，它们分别对应存储层Bean，业务层 Bean，和展示层Bean。目前版本（2.5）中，这些注解与@Component的语义是一样的
+注解某个类，让其注册成为一个bean
+
+
+   <!--在代码中使用注解必须设置context的扫描路径-->
+    <context:component-scan base-package="com.kafka.log"></context:component-scan>
+
+
+centOS日志目录:/var/log
+
+
+本地仓库jar包：http://10.1.40.239:8081/nexus/#view-repositories;thirdparty~browsestorage
+
+
+git checkout remotes/origin/v0.0.2
+错误，应该直接写v0.0.2，否则会包下面的信息，认为要创建一个新的分支名为：remotes/origin/v0.0.2
+如果确定要创建分支，可以按照下面的步骤。
+
+Note: checking out 'remotes/origin/v0.0.2'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by performing another checkout.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -b with the checkout command again. Example:
+用下面的命令：
+  git checkout -b <new-branch-name>
+
+
+git push
+fatal: The current branch remotes/origin/v0.0.2 has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+使用 git branch --set-upstream-to origin  remotes/origin/v0.0.2
+相当于将后者挂在origin下面，这个分支的路劲就是：remotes/origin/remotes/origin/v0.0.2
+
+
+git push
+fatal: The upstream branch of your current branch does not match
+the name of your current branch.  To push to the upstream branch
+on the remote, use
+
+    git push origin HEAD:master
+ git push origin  HEAD:remotes/origin/v0.0.2  成功
+ 如果是 git push origin  HEAD:/remotes/origin/v0.0.2 会不会成功？
+
+To push to the branch of the same name on the remote, use
+
+    git push origin remotes/origin/v0.0.2  失败：
+
+error: src refspec remotes/origin/v0.0.2 matches more than one
+
+这时候有两个remotes/origin/v0.0.2，因为HEAD一开始是指向origin的：
+remotes/origin/v0.0.2
+remotes/origin/remotes/origin/v0.0.2
+
+
+ git push origin --delete Chapater6   可以删除远程分支Chapater6
+
+
+
+ lombok使用注解自动生成get\set方法
+
+ netstat -lnp|grep 88   
+ ps pid查看详细进程
+ telnet cdh5 4444向固定地址端口发送消息
+
+查看占用内存和cpu最多的几个进程：
+ ps -aux | sort -k4nr | head -[前几个]
+ 4代表第四列排序，即为内存排序
+ 3为cpu排序，取前8
+ ps -aux | sort -k3nr | head -8
+ 显示内容为：
+ USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+
+
+ python 第三方库https://www.lfd.uci.edu/~gohlke/pythonlibs/#opencv
+或者https://pypi.org/ 
+
+
+/opt/cm-5.15.1/etc/init.d下启动cm服务
+
+
+确认是否有僵死进程占用磁盘
+    lsof -n | grep deleted，下图10488584（REG后第二个数字），就是该进程占用空间
+批量杀进程，释放空间
+    kill -9 `lsof -n | grep deleted| awk '{print $2}' `
+
+
+ namenode格式化：   hadoop namenode format
+
+ git commit --amend
+
+
+ 是选择war还是war exploded 这里首先看一下他们两个的区别：
+
+war模式：将WEB工程以包的形式上传到服务器 ；
+war exploded模式：将WEB工程以当前文件夹的位置关系上传到服务器；
+1
+2
+（1）war模式这种可以称之为是发布模式，看名字也知道，这是先打成war包，再发布；
+
+（2）war exploded模式是直接把文件夹、jsp页面 、classes等等移到Tomcat 部署文件夹里面，进行加载部署。因此这种方式支持热部署，一般在开发的时候也是用这种方式。
+
+
+
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'bigDataTeam' WITH GRANT OPTION;
+flush privileges;
+
+
+nohup java -jar xxl-job-admin-2.0.1.jar >xxllog.txt &
+
+
+The Ravenous Brain
+
+http://cdh4:7180/api/v19/clusters/Cluster1/services/hdfs/nameservices
+http://cdh4:7180/api/v19/clusters/Cluster1/services/hdfs/roles
+http://cdh4:7180/api/v19/hosts
+
+
+IDB 内部数据库
+10.1.80.21:3306
+root
+COM_zcreate_123456
+databases:
+idb_platform
+
+
+mysql update\delete只能操作主键。
+mysql有个叫SQL_SAFE_UPDATES的变量，为了数据库更新操作的安全性，此值默认为1
+set sql_safe_updates=0;
+设置为0就可以执行成功了
+
+
+coordinator定时任务 job_id如何获取、区分问题
+一个appId对应一个job_id，对应多个任务，取当前时间（天）内的所有任务进行展示
+
+hive、spark任务是否需要将hdfs-site.xml等文件复制到lib目录下？
+暂时不复制，调试时看运行情况
+
+两个库之间task和action的状态同步问题？
+action状态没有RUNNING状态，如何处理？前端多久刷新一次？
+
+
+1、需要将oozie库当中的任务状态数据同步到系统库中
+2、oozie库中action状态是否需要同步？
+3、10206706
+
+org.apache.hadoop.util.NativeCrc32.nativeComputeChunkedSums(IILjava/nio/ByteBuffer;ILjava/nio/ByteBuffer;IILjava/lang/String;JZ)V
+发现c盘 winds/system32/文件夹下的hadoop.dll 被删除了,重新下载64位的hadoop.dll放置到c盘该目录下。问题解决。
+
+java -jar datax.jar --actionId 1 --actionScene dbreader-kafkawriter
